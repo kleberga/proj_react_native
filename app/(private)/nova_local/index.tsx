@@ -1,15 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import Localizacao from '@/components/localizacao';
-import { useNavigation } from 'expo-router';
+import { router, useNavigation } from 'expo-router';
+import { HeaderBackButton } from '@react-navigation/elements';
+import storage from '@/infra';
 
 export default function NovoLocal() {
 
     const [nome, setNome] = useState("")
     const [latitude, setLatitude] = useState("")
     const [longitude, setLongitude] = useState("")
-    const [cor, setCor] = useState('#FF0000')
-    const [validaNome, setValidaNome] = useState(false);
+    const [cor, setCor] = useState('purple')
     const [validaLatitude, setValidaLatitude] = useState(false);
     const [validaLongitude, setValidaLongitude] = useState(false);
     const [validaCor, setValidaCor] = useState(false);
@@ -19,23 +20,45 @@ export default function NovoLocal() {
   useEffect(() => {
     navigation.setOptions({
       title: 'Nova localização',
-    });
-    const vNome = nome.length > 4 
+      headerLeft: (props: any) => (
+        <HeaderBackButton
+            {...props}
+            onPress={() => {
+                router.push('/(private)/home')
+            }}
+        />
+    )
+  });
     const vLatitude = latitude.length > 0 && typeof parseFloat(latitude) === 'number' &&  Number(latitude) >= -90 && Number(latitude) <= 90
     const vLongitude = longitude.length > 0 && typeof parseFloat(longitude) === 'number' &&  Number(longitude) >= -180 && Number(longitude) <= 180
-    const vCor = cor.length > 0 && /^#[0-9A-F]{6}$/i.test(cor)
-    setValidaNome(vNome)
+    const vCor = cor.length > 0
     setValidaLatitude(vLatitude)
     setValidaLongitude(vLongitude)
     setValidaCor(vCor)
   }, [nome, latitude, longitude, cor])
 
+  function salvar(){
+    let latitudeNumber = parseFloat(latitude as string);
+    let longitudeNumber = parseFloat(longitude as string);
+    storage.save({
+      key: 'local',
+      id: String(latitude) + '-' + String(longitude),
+      data: {
+        nome: nome,
+        latitude: latitudeNumber,
+        longitude: longitudeNumber,
+        cor: cor
+      }
+    })
+    router.push('/(private)/home');
+  }
+  
   return (
     <View style={styles.caixa}>
       <Localizacao 
         nome={nome} 
         setNome={setNome} 
-        validaNome={validaNome} 
+        validaNome={true} 
         latitude={latitude} 
         setLatitude={setLatitude} 
         validaLatitude={validaLatitude} 
@@ -46,7 +69,7 @@ export default function NovoLocal() {
         setCor={setCor}
         validaCor={validaCor}
       />
-      <TouchableOpacity onPress={() => {}} disabled={!(validaNome && validaLatitude && validaLongitude && validaCor)} style={styles.button}>
+      <TouchableOpacity onPress={salvar} disabled={!(validaLatitude && validaLongitude && validaCor)} style={styles.button}>
         <Text style={styles.buttonText}>Salvar</Text>
       </TouchableOpacity>
     </View>

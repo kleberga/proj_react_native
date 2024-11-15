@@ -11,10 +11,11 @@ export default function Layout(){
             headerTitleStyle: {
                 fontWeight: "bold"
             }
+            
         }}>
             <Stack.Screen 
             name="index" options={{
-                title: "Index"
+                title: "Index",
             }}>
             </Stack.Screen>
             <Stack.Screen 
