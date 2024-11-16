@@ -44,7 +44,7 @@ if (getRNMinorVersion() >= 75) {
   }
 }
 
-rootProject.name = 'proj_react_native'
+rootProject.name = 'Places Manager'
 
 dependencyResolutionManagement {
   versionCatalogs {
