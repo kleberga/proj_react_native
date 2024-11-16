@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "proj_react_native",
+    "name": "Places Manager",
     "slug": "proj_react_native",
+    "display_name": "Teste",
     "version": "1.0.0",
     "orientation": "default",
     "splash": {

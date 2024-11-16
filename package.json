@@ -1,5 +1,5 @@
 {
-  "name": "proj_react_native",
+  "name": "Places Manager",
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
