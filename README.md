@@ -1,50 +1,44 @@
-# Welcome to your Expo app 👋
+# Aplicativo para guardar localizações importantes
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Este aplicativo, denominado "Places Manager", tem como função armazenar localizações importantes definidas pelo usuário. O aplicativo possui as seguintes características:
+- Possui tela de login e de registro;
+- Na tela Home, aparece um mapa para o usuário marcar os locais que deseja salvar;
+- Depois de clicar no mapa, surge um marcador no mesmo que pode ser clicado novamente para abertura de uma tela onde o usuário tem a opção de inserir o nome da localização ou alterar a latitude, longitude e cor do marcador do local escolhido;
+- O usuário pode visualizar todos os locais salvos ao se clicar no botão que fica no lado direito da barra superior do aplicativo;
+- Ao se abrir a lista com as localizações salvas, o usuário pode clicar em uma localização e editá-la ou apagá-la; e
+- Quando o aplicativo é aberto em um tablet ou em um celular que estão no modo retrato, a lista de locais salvos e o mapa são renderizados lado a lado na tela Home.  
 
-## Get started
+Do ponto de vista técnico, a aplicação possui as seguintes características:
+- Foi desenvolvido utilizando a ferramenta Expo, a qual faz uso do framework React Native;
+- As telas de login e registro são apenas experimentais e as informações informadas nas mesmas não estão sendo salvas em banco de dados; e
+- A estilização dos componentes foi realizada com as bibliotecas "StyleSheet" e "styled-components".  
 
-1. Install dependencies
+As imagens a seguir apresentam a aplicação em funcionamento:
 
-   ```bash
-   npm install
-   ```
+1. Tela de login
+   
+![Tela Login](login.PNG)
 
-2. Start the app
+2. Tela de registro
 
-   ```bash
-    npx expo start
-   ```
+![Tela Registro](registro.PNG)
 
-In the output, you'll find options to open the app in a
+3. Tela Home
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+![Tela Home](mapa.PNG)
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+4. Tela Lista de Locais
 
-## Get a fresh project
+![Tela Lista de Locais](lista.PNG)
 
-When you're ready, run:
+5. Tela Nova Localização
 
-```bash
-npm run reset-project
-```
+![Tela Nova Localização](nova_localizacao.PNG)
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+6. Tela Editar Localização
 
-## Learn more
+![Tela Editar Localização](editar_localizacao.PNG)
 
-To learn more about developing your project with Expo, look at the following resources:
+7. Tela Tablet
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+![Tela Tablet](tablet.PNG)
