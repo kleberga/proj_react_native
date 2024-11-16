@@ -4,6 +4,11 @@
     "slug": "proj_react_native",
     "version": "1.0.0",
     "orientation": "default",
+    "splash": {
+      "image": "./assets/images/icone_local2.jpg",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
     "icon": "./assets/images/icone_local2.jpg",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
@@ -38,18 +43,6 @@
         "expo-screen-orientation",
         {
           "initialOrientation": "DEFAULT"
-        }
-      ],
-      [
-        "expo-splash-screen",
-        {
-          "backgroundColor": "#232323",
-          "image": "./assets/images/icone_local2.jpg",
-          "dark": {
-            "image": "./assets/images/icone_local2.jpg",
-            "backgroundColor": "#000000"
-          },
-          "imageWidth": 100
         }
       ]
     ],
