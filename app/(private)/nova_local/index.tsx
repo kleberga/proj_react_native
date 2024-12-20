@@ -1,9 +1,11 @@
-import { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import Localizacao from '@/components/localizacao';
+import { useEffect, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import Localizacao from '../../../components/localizacao';
 import { router, useNavigation } from 'expo-router';
 import { HeaderBackButton } from '@react-navigation/elements';
-import storage from '@/infra';
+import { useSQLiteContext } from 'expo-sqlite';
+import { ColorsContants } from '../../../styles/Global.style';
+import { Text, Button } from 'react-native-paper'
 
 export default function NovoLocal() {
 
@@ -17,6 +19,8 @@ export default function NovoLocal() {
 
     const navigation = useNavigation();
     
+    const db = useSQLiteContext();
+
   useEffect(() => {
     navigation.setOptions({
       title: 'Nova localização',
@@ -37,21 +41,17 @@ export default function NovoLocal() {
     setValidaCor(vCor)
   }, [nome, latitude, longitude, cor])
 
-  function salvar(){
-    let latitudeNumber = parseFloat(latitude as string);
-    let longitudeNumber = parseFloat(longitude as string);
-    storage.save({
-      key: 'local',
-      id: String(latitude) + '-' + String(longitude),
-      data: {
-        nome: nome,
-        latitude: latitudeNumber,
-        longitude: longitudeNumber,
-        cor: cor
-      }
-    })
-    router.push('/(private)/home');
-  }
+    function salvar(){
+      let latitudeNumber = parseFloat(latitude as string);
+      let longitudeNumber = parseFloat(longitude as string);
+      db.runAsync(`INSERT INTO places (
+        nome,
+        latitude,
+        longitude,
+        cor
+      ) VALUES (?,?,?,?)`,[nome, latitudeNumber, longitudeNumber, cor])
+      router.push('/(private)/home');
+    }
   
   return (
     <View style={styles.caixa}>
@@ -69,9 +69,9 @@ export default function NovoLocal() {
         setCor={setCor}
         validaCor={validaCor}
       />
-      <TouchableOpacity onPress={salvar} disabled={!(validaLatitude && validaLongitude && validaCor)} style={styles.button}>
+      <Button onPress={salvar} disabled={!(validaLatitude && validaLongitude && validaCor)} style={styles.button}>
         <Text style={styles.buttonText}>Salvar</Text>
-      </TouchableOpacity>
+      </Button>
     </View>
   )
 };
@@ -86,16 +86,15 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: ColorsContants.backgroundColor
   },
   button : {
     marginTop: 20,
-    padding: 10,
     backgroundColor: 'black',
-    borderRadius: 15,
-    alignItems: 'center',
-    justifyContent: 'center',
+    borderRadius: 10,
     minWidth: 300,
     textAlign: 'center',
+    maxHeight: 50
   },
   buttonText: {
     color: 'white',

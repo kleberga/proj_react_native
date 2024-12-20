@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Alert } from 'react-native';
 import Input from '../components/input'
 import { router } from 'expo-router';
-
+//import env from '@/constants/env';
+import env from './(private)/config';
+import { ColorsContants, FontConstants } from '../styles/Global.style';
+import { Text, Button } from 'react-native-paper'
 
 export default function Register() {
   const [username, setUsername] = useState('');
@@ -10,10 +13,36 @@ export default function Register() {
   const [isValidNome, setIsValidNome] = useState(false);
   const [isValidSenha, setIsValidSenha] = useState(false);
   
-  const register = () => {
-    router.push('/(private)/home');
-    setUsername('')
-    setPassword('')
+  const register = async () => {
+    if(username && password) {
+      const apiURL = env.API_URL as string;
+      const apiKEY = env.API_KEY as string;
+      try{
+        const response = await fetch(`${apiURL}/v1/accounts:signUp?key=${apiKEY}`,{
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: username,
+            password:  password,
+            returnSecureToken: true,
+          })
+        })
+        const {status, statusText} = response;
+        if(status == 200) {
+          const body = await response.json()
+            router.push('/(private)/home');
+          } else if(status == 400){
+            const body = await response.json()
+            Alert.alert('E-mail e/ou senha inválidos')
+          } else {
+            Alert.alert('Falha ao realizar registro')
+          }
+        } catch (error) {
+          Alert.alert('Erro ao realizar registro')
+        }
+    }
   }
 
   const re = /(?=.*[A-Z])(?=.*\d)/;
@@ -42,9 +71,9 @@ export default function Register() {
         isValid={isValidSenha}
         secureTextEntry={true}
       />
-      <TouchableOpacity onPress={register} disabled={!(isValidNome && isValidSenha)} style={styles.button}>
+      <Button onPress={register} disabled={!(isValidNome && isValidSenha)} style={styles.button}>
         <Text style={styles.buttonText}>Registrar</Text>
-      </TouchableOpacity>
+      </Button>
     </View>
   )
 };
@@ -56,6 +85,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 20,
+    color: FontConstants.color,
   },
   caixa: {
     flex: 1,
@@ -65,16 +95,16 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: ColorsContants.backgroundColor,
   },
   button : {
     marginTop: 20,
     padding: 10,
     backgroundColor: '#3477eb',
     borderRadius: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
     minWidth: 100,
     textAlign: 'center',
+    maxHeight: 50
   },
   buttonText: {
     color: 'white',

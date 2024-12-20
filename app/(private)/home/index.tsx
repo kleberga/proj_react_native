@@ -1,13 +1,13 @@
 import { Dimensions, View} from 'react-native';
 import MapView, { LatLng, Marker } from 'react-native-maps';
-import { FloatingAction } from "react-native-floating-action";
 import { router, useNavigation } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet } from "react-native";
 import { IconButton } from 'react-native-paper';
-import storage from '@/infra';
 import * as Location from 'expo-location';
-import ListaLocais from '@/components/lista';
+import {ListaLocais} from '../../../components/lista';
+import { useSQLiteContext } from 'expo-sqlite';
+import { FAB } from 'react-native-paper'
 
 type ItemData = {
     latitude: number;
@@ -18,12 +18,15 @@ export default function Home(){
 
     const [marker, setMarker] = useState([] as LatLng[])
     const navigation = useNavigation();
-    const [location, setLocation] = useState({} as ItemData);
+    const [locacao, setLocacao] = useState({latitude: -22.951804, longitude: -43.210760} as ItemData);
+    const [region, setRegion] = useState({ latitude: locacao.latitude, longitude: locacao.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421, });
     const [errorMsg, setErrorMsg] = useState('');
     const {height,width} = Dimensions.get("window")
     const [isTablet, setIsTablet] = useState(width > height)
     const [lista, setLista] = useState([] as ItemData[])
     const [selectedId, setSelectedId] = useState<string>();
+
+    const db = useSQLiteContext()
 
     useEffect(() => {
         (async () => {
@@ -32,59 +35,78 @@ export default function Home(){
             setErrorMsg('Permissão para acesso à localização negada');
             return;
           }
-          let location = await Location.getCurrentPositionAsync({});
-          setLocation({latitude: location.coords.latitude, longitude: location.coords.longitude})
+          let location = (await Location.getCurrentPositionAsync({})).coords;
+          setLocacao({latitude: location.latitude, longitude: location.longitude})
+          setRegion({ latitude: location.latitude, longitude: location.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421}); 
         })();
-      }, []);
+    }, []);
 
-      const region = { latitude: location.latitude, longitude: location.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }
+    //const region = { latitude: locacao.latitude, longitude: locacao.longitude, latitudeDelta: 0.0922, longitudeDelta: 0.0421 }
 
     useEffect(() => {
         navigation.setOptions({
             title: 'Places Manager',
         });
         if(!isTablet){
-            navigation.setOptions({
+             navigation.setOptions({
                 headerRight: () => (
+                    <>
                     <IconButton 
                         size={30}
                         icon="view-list"
                         onPress={() => router.push('/lista_locais')}
                         iconColor="#fff"
-                    />),
-            });
+                    />
+                     <IconButton 
+                        size={30}
+                        icon="account"
+                        onPress={() => router.push('/perfil')}
+                        iconColor="#fff"
+                    />
+                    </>
+                ),
+            }); 
+        } else {
+            navigation.setOptions({
+                headerRight: () => (
+                     <IconButton 
+                        size={30}
+                        icon="account"
+                        onPress={() => router.push('/perfil')}
+                        iconColor="#fff"
+                    />
+                ),
+            }); 
         }
-        storage.getAllDataForKey('local').then(locals => {
-            setMarker(locals)
-        });
+        db.getAllAsync<ItemData>(`SELECT * FROM places`).then(data => {
+            setMarker(data)
+        })
     }, [])
 
     useEffect(() => {
-          storage.getAllDataForKey('local').then(locals => {
-            setLista(locals)
-        });
+        db.getAllAsync<ItemData>(`SELECT * FROM places`).then(data => {
+            setLista(data)
+        })
      },[marker])
-
 
     return (
         <View style={{ flex: 1, flexDirection: 'row-reverse' }}>
-            <MapView style={styles.mapStyle} 
+            <MapView style={styles.mapStyle}
+                cacheEnabled={false}
                 region={region} 
                 showsUserLocation={true}
                 onPress={(e) => {
-                    storage.save({
-                        key: 'local', 
-                        id:  String(e.nativeEvent.coordinate.latitude) + "-" + String(e.nativeEvent.coordinate.longitude),
-                        data: {
-                            nome: '',
-                            latitude: e.nativeEvent.coordinate.latitude,
-                            longitude: e.nativeEvent.coordinate.longitude,
-                            cor: 'purple',
-                        },
-                      });
-                      storage.getAllDataForKey('local').then(locals => {
-                        setMarker(locals)
-                    });
+                      let latitudeNumber = e.nativeEvent.coordinate.latitude;
+                      let longitudeNumber = e.nativeEvent.coordinate.longitude;
+                      db.runAsync(`INSERT INTO places (
+                        nome,
+                        latitude,
+                        longitude,
+                        cor
+                      ) VALUES (?,?,?,?)`,['', latitudeNumber, longitudeNumber, 'purple']);
+                    db.getAllAsync<ItemData>(`SELECT * FROM places`).then(data => {
+                        setMarker(data)
+                    })
                     }}>
                     {
                     marker.map((marker: any, index: any) => {
@@ -97,7 +119,7 @@ export default function Home(){
                                     title={marker.nome}
                                     onPress={() => {
                                         router.push({pathname: '/(private)/clicar_mapa',
-                                            params: {nome: marker.nome, latitude: marker.latitude, longitude: marker.longitude, cor: marker.cor, rota: '/(private)/home'}});
+                                            params: {id: marker.id, nome: marker.nome, latitude: marker.latitude, longitude: marker.longitude, cor: marker.cor, rota: '/(private)/home'}});
                                     }}
                                 />
                             </View>
@@ -105,25 +127,35 @@ export default function Home(){
                     }
             </MapView>
             {isTablet && <ListaLocais lista={lista} selectedId={selectedId}/>}
-            <View style={styles.view}  pointerEvents='box-none'>
-                <FloatingAction
-                    onPressMain={() => {
-                        router.push('/(private)/nova_local');
-                     }}/>
+            <View style={styles.view1}  pointerEvents='box-none'>
+                <FAB
+                    icon="plus"
+                    color="white"
+                    style={styles.fab}
+                    onPress={() => {
+                         router.push('/(private)/nova_local');
+                    }}/>
             </View>
         </View>
     );
 }
 
-
 const styles = StyleSheet.create({
     mapStyle: {
         flex: 1,
-        //...StyleSheet.absoluteFillObject,
         },
-    view: {
+    view1: {
         flex: 1,
         ...StyleSheet.absoluteFillObject,
         backgroundColor: 'transparent',
-   }
+   },
+   fab: {
+        position: 'absolute',
+        margin: 16,
+        right: 0,
+        bottom: 0,
+        backgroundColor: '#036bfc',
+  },
 });
+
+

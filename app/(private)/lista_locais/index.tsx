@@ -1,9 +1,11 @@
 import { useNavigation, router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
-import storage from '@/infra';
+import { StyleSheet, View} from 'react-native';
 import { HeaderBackButton } from '@react-navigation/elements';
-import ListaLocais from '@/components/lista';
+import { ListaLocais} from '../../../components/lista';
+import { useSQLiteContext } from 'expo-sqlite';
+import { Text, Button } from 'react-native-paper'
+import { ColorsContants } from '../../../styles/Global.style';
 
 type ItemData = {
     nome: string;
@@ -18,6 +20,13 @@ export default function ListaSeparada(){
     const [selectedId, setSelectedId] = useState<string>();
     const [lista, setLista] = useState([] as ItemData[])
 
+    const db = useSQLiteContext();
+
+    async function recuperarLista(){
+        const locals = await db.getAllAsync<ItemData>(`SELECT * FROM places`)
+        setLista(locals);
+    }
+
      useEffect(() => {
         navigation.setOptions({
             title: 'Todas as localizações',
@@ -26,45 +35,39 @@ export default function ListaSeparada(){
                     {...props}
                     onPress={() => {
                         router.push('/(private)/home')
-                    }}
-                />
+                    }}/>
             )
           });
-          storage.getAllDataForKey('local').then(locals => {
-            setLista(locals)
-        });
+        recuperarLista()
      },[])
-
      return(
-        <ListaLocais lista={lista} selectedId={selectedId}/>
+        <>
+            <View style={styles.caixa}>
+                <Button onPress={() => { router.push('/(private)/lista_locais_gq')}}  style={styles.button}>
+                    <Text style={styles.buttonText}>Sugestões de locais</Text>
+                </Button>
+            </View>
+            <ListaLocais lista={lista} selectedId={selectedId}/>
+        </>
      )
 }
 
-
-
 const styles = StyleSheet.create({
-    seperator: {
-        height: 1,
-        backgroundColor: "black",
-        marginVertical: 10,
-        width: "90%",
-        alignSelf: "center"
+    button : {
+      marginTop: 20,
+      backgroundColor: 'black',
+      borderRadius: 10,
+      minWidth: 300,
+      maxWidth: 300,
+      maxHeight: 50,
+      textAlign: 'center',
     },
-    textoNome: {
-        fontSize: 20,
-        fontWeight: "bold",
-        padding: 10,
-        marginBottom: 5
+    buttonText: {
+      color: 'white',
+      fontWeight: 'bold',
     },
-    textoCoord: {
-        fontSize: 16,
-        paddingLeft: 10,
-    },
-    view: {
-        flexDirection: "row",
-        flexWrap: 'wrap',
-    },
-    icone: {
-        marginTop: 12,
+    caixa : {
+        alignItems: 'center',
+        backgroundColor: ColorsContants.backgroundColor
     }
-});
+  });

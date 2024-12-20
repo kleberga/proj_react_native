@@ -1,15 +1,20 @@
-import { StyleSheet, TextInput, View, Text } from "react-native";
+import { StyleSheet, View  } from "react-native";
+import { FontConstants, ColorsContants } from '@/styles/Global.style';
+import { Text, TextInput } from 'react-native-paper'
 
 export default function Input({valuePlace, value, setValue, isValid, secureTextEntry}: any){
 
     return(
         <View>
-            <TextInput 
+            <TextInput
                 placeholder={valuePlace}
                 value = {value}
                 onChangeText={setValue}
                 secureTextEntry={secureTextEntry}
                 style={styles.input}
+                placeholderTextColor={styles.placeHolder.color}
+                textColor={FontConstants.color}
+                cursorColor={FontConstants.color}
             />
             {
                 !isValid && (
@@ -22,19 +27,19 @@ export default function Input({valuePlace, value, setValue, isValid, secureTextE
 
 const styles = StyleSheet.create({
     input: {
-        marginTop: 10,
         borderWidth: 1,
         borderColor: '#ccc',
-        paddingTop: 6,
-        paddingBottom: 6,
-        paddingLeft: 8,
-        paddingRight: 8,
+        marginTop: 10,
         marginBottom: 10,
         borderRadius: 5,
         minWidth: 300,
-        maxWidth: 300,
+        maxHeight: 50,
+        backgroundColor: 'transparent',
     },
     errorMessage: {
-        color:'red'
+        color: ColorsContants.errorConstantsColor
+    },
+    placeHolder: {
+        color: FontConstants.color
     }
 });

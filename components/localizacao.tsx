@@ -7,7 +7,7 @@ export default function Localizacao({nome, setNome, validaNome, latitude, setLat
 
   return (
     <View>
-      <Input 
+      <Input
         valuePlace='Nome da localização'
         value = {nome}
         setValue={setNome}
