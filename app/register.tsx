@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, View, Alert } from 'react-native';
 import Input from '../components/input'
 import { router } from 'expo-router';
-//import env from '@/constants/env';
 import env from './(private)/config';
 import { ColorsContants, FontConstants } from '../styles/Global.style';
 import { Text, Button } from 'react-native-paper'
@@ -99,7 +98,6 @@ const styles = StyleSheet.create({
   },
   button : {
     marginTop: 20,
-    padding: 10,
     backgroundColor: '#3477eb',
     borderRadius: 5,
     minWidth: 100,

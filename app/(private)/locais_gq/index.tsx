@@ -4,7 +4,6 @@ import { Alert, StyleSheet, View } from "react-native";
 import Localizacao from '../../../components/localizacao';
 import { useSQLiteContext } from 'expo-sqlite';
 import { ColorsContants } from '../../../styles/Global.style';
-//import env from '@/constants/env';
 import env from '../config';
 import { Button, Text } from 'react-native-paper'
 

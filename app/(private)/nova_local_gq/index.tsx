@@ -5,7 +5,6 @@ import { router, useNavigation } from 'expo-router';
 import { HeaderBackButton } from '@react-navigation/elements';
 import { useSQLiteContext } from 'expo-sqlite';
 import { ColorsContants } from '../../../styles/Global.style';
-//import env from '@/constants/env';
 import env from '../config';
 import { Text, Button } from 'react-native-paper'
 

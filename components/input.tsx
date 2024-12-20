@@ -35,11 +35,13 @@ const styles = StyleSheet.create({
         minWidth: 300,
         maxHeight: 50,
         backgroundColor: 'transparent',
+        textAlignVertical: 'center',
+        justifyContent: 'center'
     },
     errorMessage: {
         color: ColorsContants.errorConstantsColor
     },
     placeHolder: {
-        color: FontConstants.color
+        color: FontConstants.color,
     }
 });

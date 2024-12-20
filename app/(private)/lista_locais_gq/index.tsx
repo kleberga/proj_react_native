@@ -5,7 +5,6 @@ import { HeaderBackButton } from '@react-navigation/elements';
 import { ListaLocais_gq } from '../../../components/lista';
 import { useSQLiteContext } from 'expo-sqlite';
 import { ColorsContants } from '../../../styles/Global.style';
-//import env from '@/constants/env';
 import env from '../config';
 import { FAB } from 'react-native-paper'
 

@@ -3,7 +3,6 @@ import { StyleSheet, View, Alert } from 'react-native';
 import Input from '../components/input'
 import { Link, router } from 'expo-router';
 import { ColorsContants, FontConstants } from '../styles/Global.style';
-//import env from '@/constants/env';
 import env from './(private)/config';
 import { UserActionType, UserContext, UserDispatchContext } from '../context/userContext';
 import { Text, Button } from 'react-native-paper'
