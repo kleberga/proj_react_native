@@ -17,7 +17,7 @@ Do ponto de vista técnico, a aplicação possui as seguintes características:
 - Foram utilizados alguns componentes da biblioteca "React Native Paper", como botões, containers de texto, input de texto e botões flutuantes; e
 - A estilização dos componentes foi realizada com as bibliotecas "StyleSheet" e "styled-components".  
 
-As imagens a seguir apresentam a aplicação em funcionamento:
+As imagens a seguir apresentam as telas da aplicação em funcionamento:
 
 1. Tela de login
    
