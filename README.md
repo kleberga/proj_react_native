@@ -3,9 +3,9 @@
 Este aplicativo, denominado "Places Manager", tem como função armazenar localizações importantes definidas pelo usuário. O aplicativo possui as seguintes características:
 - Possui tela de login e de registro;
 - Na tela Home, aparece um mapa para o usuário marcar os locais que deseja salvar;
-- Depois de clicar no mapa, surge um marcador no mesmo que pode ser clicado novamente para abertura de uma tela onde o usuário tem a opção de inserir o nome da localização ou alterar a latitude, longitude e cor do marcador do local escolhido;
-- O usuário pode visualizar todos os locais salvos ao se clicar no botão que fica no lado direito da barra superior do aplicativo;
-- Ao se abrir a lista com as localizações salvas, o usuário pode clicar em uma localização e editá-la ou apagá-la. Além disso, no topo desta lista consta um botão que, ao ser clicado, exibe uma lista de sugestões de locais interessantes;
+- Depois de clicar no mapa, surge um marcador no mesmo que pode ser clicado novamente para abertura de uma tela onde o usuário tem a opção de inserir o nome da localização ou alterar a latitude, longitude e cor do marcador do local escolhido. Há também um botão na parte inferior direita que permite ao usuário inserir um novo local, informando nome, latitude, longitude e cor do marcado;
+- O usuário pode visualizar todos os locais salvos ao se clicar no botão que fica no lado direito da barra superior do aplicativo, ao lado do botão de perfil;
+- Ao se abrir a lista com as localizações salvas, o usuário pode clicar em uma localização e editá-la ou apagá-la. Além disso, no topo desta lista consta um botão que, ao ser clicado, exibe uma lista de sugestões de locais;
 - O aplicativo está preparado para utilizar cores mais escuras caso o usuário escolha, no sistema operacional, o tema "dark"; e
 - Quando o aplicativo é aberto em um tablet ou em um celular que estão no modo retrato, a lista de locais salvos e o mapa são renderizados lado a lado na tela Home.  
 
@@ -29,20 +29,28 @@ As imagens a seguir apresentam a aplicação em funcionamento:
 
 3. Tela Home
 
-![Tela Home](mapa.PNG)
+![Tela Home](home.PNG)
 
 4. Tela Lista de Locais
 
-![Tela Lista de Locais](lista.PNG)
+![Tela Lista de Locais](lista_locais.PNG)
 
-5. Tela Nova Localização
+5. Tela Lista de Sugestões de Locais
+
+![Tela Lista de Sugestões de Locais](sugestoes_locais.PNG)
+
+6. Tela Nova Localização
 
 ![Tela Nova Localização](nova_localizacao.PNG)
 
-6. Tela Editar Localização
+7. Tela Editar Localização
 
-![Tela Editar Localização](editar_localizacao.PNG)
+![Tela Editar Localização](editar.PNG)
 
-7. Tela Tablet
+8. Tela de Perfil
+
+![Tela Perfil](perfil.PNG)
+
+9. Tela Tablet
 
 ![Tela Tablet](tablet.PNG)
